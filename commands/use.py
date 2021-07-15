@@ -28,9 +28,17 @@ def use(args):
         sys.exit(1)
 
     dest_path = DOWNLOAD_PATH + program + "_" + version
+
+    bin_path = ""
+    venv_path = os.environ['VIRTUAL_ENV']
+    if venv_path and os.path.isdir(venv_path):
+        bin_path = venv_path + "/bin/"
+    else:
+        bin_path = "/usr/local/bin/"
+
     try:
-        os.remove("/usr/local/bin/" + program )
+        os.remove(bin_path + program)
     except FileNotFoundError:
         pass
-    os.symlink(dest_path, "/usr/local/bin/" + program )
+    os.symlink(dest_path, bin_path + program)
     print(program + " version is set to " + version)

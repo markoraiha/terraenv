@@ -18,8 +18,16 @@ def uninstall(args):
         sys.exit(1)
 
     dest_path = DOWNLOAD_PATH + program + "_" + version
+
+    bin_path = ""
+    venv_path = os.environ['VIRTUAL_ENV']
+    if venv_path and os.path.isdir(venv_path):
+        bin_path = venv_path + "/bin/"
+    else:
+        bin_path = "/usr/local/bin/"
+
     try:
-        active_version = os.readlink("/usr/local/bin/" + program ).split('_')[1]
+        active_version = os.readlink(bin_path + program ).split('_')[1]
 
         if active_version != version:
             os.remove(dest_path)
